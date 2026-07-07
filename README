@@ -1,0 +1,37 @@
+cat > README.md << 'EOF'
+# RHEL User Management Automation Script
+
+A Bash script to automate user lifecycle management on Red Hat Enterprise Linux (RHEL 8/9).
+
+## Features
+- Create and delete users with custom home directory and shell
+- Assign users to primary or supplementary groups
+- Set password aging policies using `chage` and `/etc/login.defs`
+- Manage sudo permissions (full, limited, or revoke)
+- Lock and unlock user accounts
+- All actions logged to `/var/log/user_management.log`
+
+## Requirements
+- RHEL 8 or RHEL 9
+- Must be run as root or with sudo
+
+## Usage
+```bash
+chmod +x scripts/user_management.sh
+sudo ./scripts/user_management.sh
+```
+
+## Screenshots
+![Main Menu](screenshots/01_main_menu.png)
+![Create User](screenshots/02_create_user.png)
+
+## Concepts Covered
+- `useradd`, `usermod`, `userdel`
+- `groupadd`, `gpasswd`
+- `chage`, `passwd`, `/etc/login.defs`
+- `/etc/sudoers.d/`, `visudo`, `wheel` group
+- `usermod -L / -U` for account locking
+
+## Author
+Your Name — RHCSA Certified
+EOF
