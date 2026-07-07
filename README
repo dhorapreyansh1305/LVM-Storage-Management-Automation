@@ -1,37 +1,61 @@
 cat > README.md << 'EOF'
-# RHEL User Management Automation Script
+# RHEL LVM Storage Management Automation
 
-A Bash script to automate user lifecycle management on Red Hat Enterprise Linux (RHEL 8/9).
+A comprehensive Bash script to automate the full LVM (Logical Volume Manager)
+lifecycle on Red Hat Enterprise Linux (RHEL 8/9).
 
 ## Features
-- Create and delete users with custom home directory and shell
-- Assign users to primary or supplementary groups
-- Set password aging policies using `chage` and `/etc/login.defs`
-- Manage sudo permissions (full, limited, or revoke)
-- Lock and unlock user accounts
-- All actions logged to `/var/log/user_management.log`
+
+- Create Physical Volumes (PV), Volume Groups (VG), Logical Volumes (LV)
+- Format LVs as ext4 or XFS filesystem
+- Mount LVs with UUID-based persistent /etc/fstab entries
+- Extend LVs online with automatic filesystem resize (resize2fs / xfs_growfs)
+- Safely reduce ext4 LVs with pre-checks (e2fsck)
+- Setup and persist swap space on LVs
+- Extend Volume Groups by adding new disks
+- Remove PV / VG / LV safely with confirmation prompts
+- Auto-backup /etc/fstab before every modification
+- All actions logged to /var/log/lvm_management.log
 
 ## Requirements
-- RHEL 8 or RHEL 9
-- Must be run as root or with sudo
 
-## Usage
+- RHEL 8 or RHEL 9
+- lvm2 package (auto-installed by script if missing)
+- Must run as root or with sudo
+
+## Quick Start
+
 ```bash
-chmod +x scripts/user_management.sh
-sudo ./scripts/user_management.sh
+chmod +x scripts/lvm_management.sh
+sudo ./scripts/lvm_management.sh
+```
+
+## Testing Without a Physical Disk
+
+```bash
+chmod +x configs/loop-device-setup.sh
+sudo ./configs/loop-device-setup.sh
+# Then use /dev/loop10 and /dev/loop11 in the script
 ```
 
 ## Screenshots
+
 ![Main Menu](screenshots/01_main_menu.png)
-![Create User](screenshots/02_create_user.png)
+![LVM Status](screenshots/02_lvm_status.png)
+![LV Created and Mounted](screenshots/04_lvcreate_mount.png)
+![LV Extended](screenshots/06_lvextend_resize.png)
 
 ## Concepts Covered
-- `useradd`, `usermod`, `userdel`
-- `groupadd`, `gpasswd`
-- `chage`, `passwd`, `/etc/login.defs`
-- `/etc/sudoers.d/`, `visudo`, `wheel` group
-- `usermod -L / -U` for account locking
+
+- pvcreate, vgcreate, lvcreate, lvextend, lvreduce, lvremove
+- vgextend, vgremove, pvremove
+- mkfs.ext4, mkfs.xfs
+- resize2fs, xfs_growfs
+- mkswap, swapon
+- UUID-based /etc/fstab persistent mounts
+- blkid, findmnt, lsblk, df
 
 ## Author
-Your Name — RHCSA Certified
+Your Name — RHCSA Certified | Aspiring Cloud Engineer
+GitHub: github.com/yourname
 EOF
